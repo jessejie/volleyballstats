@@ -18,6 +18,7 @@ P3 Pct: 60%
 P2 Pct: 20%
 P1 Pct: 13%
 P0 Pct: 7%
+Avg Pass: 2.33
 Total Freeballs: 7
 Freeball Pct: 100%
 
@@ -60,6 +61,7 @@ P3 Pct: 0%
 P2 Pct: 0%
 P1 Pct: 0%
 P0 Pct: 100%
+Avg Pass: 0.0
 Total Freeballs: 0
 Freeball Pct: N/A%
 
@@ -107,6 +109,7 @@ P3 Pct: 33%
 P2 Pct: 20%
 P1 Pct: 20%
 P0 Pct: 27%
+Avg Pass: 1.6
 Total Freeballs: 4
 Freeball Pct: 100%
 
@@ -149,6 +152,7 @@ P3 Pct: 13%
 P2 Pct: 33%
 P1 Pct: 53%
 P0 Pct: 0%
+Avg Pass: 1.6
 Total Freeballs: 3
 Freeball Pct: 100%
 
@@ -195,6 +199,7 @@ P3 Pct: 27%
 P2 Pct: 33%
 P1 Pct: 13%
 P0 Pct: 27%
+Avg Pass: 1.6
 Total Freeballs: 6
 Freeball Pct: 100%
 
@@ -237,6 +242,7 @@ P3 Pct: 21%
 P2 Pct: 21%
 P1 Pct: 36%
 P0 Pct: 21%
+Avg Pass: 1.43
 Total Freeballs: 3
 Freeball Pct: 33%
 

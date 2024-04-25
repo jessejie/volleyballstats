@@ -11,10 +11,11 @@ SEPARATOR1 = "=========="
 SEPARATOR2 = "----------"
 
 
-def perct(a, b):
+def perct(a, b, decimals=0):
     if b == 0:
         return "N/A"
-    return f"{round(a * 100.0 / b)}"
+    # round has some formatting issues when specifying 0 digits
+    return f"{round(a * 100.0 / b)}" if decimals == 0 else f"{round(a * 100.0 / b, decimals)}"
 
 # Volleyball stats following this legend:
 # H	  -> Hit but opponents get offense
@@ -119,6 +120,7 @@ P3 Pct: {perct(self.p3, total_passes)}%
 P2 Pct: {perct(self.p2, total_passes)}%
 P1 Pct: {perct(self.p1, total_passes)}%
 P0 Pct: {perct(self.p0, total_passes)}%
+Avg Pass: {perct(self.p3 * 3 + self.p2 * 2 + self.p1, total_passes * 100, decimals=2)}
 Total Freeballs: {total_freeball}
 Freeball Pct: {perct(self.freeball, total_freeball)}%
 
@@ -240,7 +242,7 @@ def parse_score_rows(player_index, setter, rows):
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     if len(sys.argv) != 3:
-        raise RuntimeError("Wrong number of arguments. Use main.py spreadsheet.xlsx W4*")
+        raise RuntimeError("Wrong number of arguments. Use `main.py \"spreadsheet.xlsx\" \"W4(.*)\"`")
 
     file = sys.argv[1]
     workbook = load_workbook(filename=file)
