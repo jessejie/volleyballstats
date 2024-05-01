@@ -11,11 +11,13 @@ SEPARATOR1 = "=========="
 SEPARATOR2 = "----------"
 
 
-def perct(a, b, decimals=0):
+def perct(a, b, decimals=0, standardize=False):
     if b == 0:
         return "N/A"
-    # round has some formatting issues when specifying 0 digits
-    return f"{round(a * 100.0 / b)}" if decimals == 0 else f"{round(a * 100.0 / b, decimals)}"
+    percent = a * 100.0 / b
+    if standardize:
+        percent = (percent + 100) / 2
+    return f"{round(percent) if decimals == 0 else round(percent, decimals)}"
 
 # Volleyball stats following this legend:
 # H	  -> Hit but opponents get offense
@@ -106,7 +108,7 @@ class Player:
 HITTING
 {SEPARATOR2}
 Total Hits: {total_hits}
-Effective Hit Rating: {perct(self.kills + (0.5 * self.hit_free) - self.hitting_errors, total_hits)}
+Effective Hit Rating: {perct(self.kills + (0.5 * self.hit_free) - self.hitting_errors, total_hits, standardize=True)}
 Kill Pct: {perct(self.kills, total_hits)}%
 Hit Freeball Pct: {perct(self.hit_free, total_hits)}%
 Hit with Opponent Offense Pct: {perct(self.hits, total_hits)}%
@@ -115,7 +117,7 @@ Error Rate: {perct(self.hitting_errors, total_hits)}%
 PASSING
 {SEPARATOR2}
 Total Passes: {total_passes}
-Effective Pass Rating: {perct(self.p3 + self.p2 - (0.5 * self.p1) - self.p0, total_passes)}
+Effective Pass Rating: {perct(self.p3 + self.p2 - (0.5 * self.p1) - self.p0, total_passes, standardize=True)}
 P3 Pct: {perct(self.p3, total_passes)}%
 P2 Pct: {perct(self.p2, total_passes)}%
 P1 Pct: {perct(self.p1, total_passes)}%
@@ -127,7 +129,7 @@ Freeball Pct: {perct(self.freeball, total_freeball)}%
 SERVING
 {SEPARATOR2}
 Total Serves: {total_serves}
-Effective Serve Rating: {perct(self.s0 + self.s1 - (0.5 * self.s3) - self.serve_error, total_serves)}
+Effective Serve Rating: {perct(self.s0 + self.s1 - (0.5 * self.s3) - self.serve_error, total_serves, standardize=True)}
 S0 Pct: {perct(self.s0, total_serves)}%
 S1 Pct: {perct(self.s1, total_serves)}%
 S2 Pct: {perct(self.s2, total_serves)}%
@@ -140,7 +142,7 @@ Total Defenses: {total_defense}
 Defense Pct: {perct(self.defense, total_defense)}%
 Covers: {self.cover}
 Total Blocks: {total_blocks}
-Block Rating: {perct((0.5 * self.block) + self.block_kill - self.block_error, total_blocks)}
+Block Rating: {perct((0.5 * self.block) + self.block_kill - self.block_error, total_blocks, standardize=True)}
 Block Kill Pct: {perct(self.block_kill, total_blocks)}%
 Block Error Pct: {perct(self.block_error, total_blocks)}%
         """
@@ -248,7 +250,7 @@ if __name__ == '__main__':
     workbook = load_workbook(filename=file)
 
     sheet_regex = sys.argv[2]
-    worksheets = [worksheet for worksheet in workbook.worksheets if re.match(sheet_regex, worksheet.title)]
+    worksheets = [worksheet for worksheet in workbook.worksheets if re.match(sheet_regex + "(.*)", worksheet.title)]
 
     players = {}
 
@@ -277,5 +279,5 @@ if __name__ == '__main__':
     for player in players.values():
         full_report += player.generate_report()
 
-    with open("report.txt", "w") as output:
+    with open(f"report{sheet_regex}.txt", "w") as output:
         output.write(full_report)
